@@ -36,29 +36,35 @@ The plugin hooks into WordPress's email system to apply your custom template to 
 
 | Email Template Settings | Sending Settings | Styling Settings | SMTP Configuration | Email Preview |
 |-------------------------|------------------|------------------|--------------------|--------------|
-| ![General Settings](assets/images/screenshot-1.png) | ![Sending Settings](assets/images/screenshot-2.png) | ![Styling Settings](assets/images/ screenshot-3.png) | ![SMTP Configuration](assets/images/screenshot-4.png) | ![Email Preview](assets/images/screenshot-5.png) |
-assets/images/ screenshot-3.png
+| ![General Settings](assets/images/screenshot-1.png) | ![Sending Settings](assets/images/screenshot-2.png) | ![Styling Settings](assets/images/screenshot-3.png) | ![SMTP Configuration](assets/images/screenshot-4.png) | ![Email Preview](assets/images/screenshot-5.png) |
+
 ## Configuration
 
 ### General Settings
 Configure your logo, logo alignment, and footer text that appears at the bottom of every email.
 
-![General Settings](./assets/images/general-settings.png)
+![General Settings](assets/images/screenshot-1.png)
 
 ### Sender Information
 Control who emails appear to be from, including the sender name, email address, and reply-to address.
 
-![Sender Settings](./assets/images/sender-settings.png)
+![Sender Settings](assets/images/screenshot-2.png)
 
 ### Email Styling
 Customize the colors of your email template, including background colors, text colors, and button colors.
 
-![Styling Settings](./assets/images/styling-settings.png)
+![Styling Settings](assets/images/screenshot-3.png)
 
 ### SMTP Configuration
 Configure SMTP to send emails reliably through an external mail server.
 
-![SMTP Settings](./assets/images/smtp-settings.png)
+![SMTP Settings](assets/images/screenshot-4.png)
+
+
+### Email preview
+See preview of your email customization in real time.
+
+![SMTP Settings](assets/images/screenshot-5.png)
 
 ## Frequently Asked Questions
 
