@@ -36,8 +36,8 @@ The plugin hooks into WordPress's email system to apply your custom template to 
 
 | Email Template Settings | Sending Settings | Styling Settings | SMTP Configuration | Email Preview |
 |-------------------------|------------------|------------------|--------------------|--------------|
-| ![General Settings](assets/images/screenshot-1.png) | ![Sending Settings](assets/images/screenshot-2.png) | ![Styling Settings](assets/images/screenshot-3.png) | ![SMTP Configuration](assets/images/screenshot-4.png) | ![Email Preview](assets/images/screenshot-5.png) |
-
+| ![General Settings](assets/images/screenshot-1.png) | ![Sending Settings](assets/images/screenshot-2.png) | ![Styling Settings](assets/images/ screenshot-3.png) | ![SMTP Configuration](assets/images/screenshot-4.png) | ![Email Preview](assets/images/screenshot-5.png) |
+assets/images/ screenshot-3.png
 ## Configuration
 
 ### General Settings
