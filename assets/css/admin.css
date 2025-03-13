@@ -1,0 +1,694 @@
+/* Email Template Settings - Modern BerqWP-style theme */
+:root {
+  --primary-color: #3a4b79;
+  --primary-dark: #1d2646;
+  --primary-light: #5a6c9a;
+  --accent-color: #4285f4;
+  --success-color: #34a853;
+  --warning-color: #fbbc05;
+  --danger-color: #ea4335;
+  --text-dark: #202124;
+  --text-medium: #5f6368;
+  --text-light: #9aa0a6;
+  --border-color: #dadce0;
+  --bg-light: #f8f9fa;
+  --bg-white: #ffffff;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+}
+
+
+
+
+
+/* Force correct button styling in email preview */
+#email-preview a[href="#"],
+#email-preview-mobile a[href="#"],
+.preview-device-content a[href="#"],
+.email-content a.button {
+    display: inline-block !important;
+    padding: 10px 20px !important;
+    border-radius: 4px !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+}
+
+/* Prevent undefined text from showing */
+.preview-device-from .preview-from-name:empty:before {
+    content: attr(data-default);
+}
+
+.preview-device-from .preview-from-email:empty:before {
+    content: "<admin@example.com>";
+}
+
+/* Fix email preview container to prevent shifting */
+.preview-device-frame {
+    min-height: 200px;
+}
+
+/* Hide undefined text in preview */
+.preview-device-from span:after {
+    content: none !important;
+}
+
+.email-template-settings-app {
+  max-width: 1400px;
+  margin: 20px 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  color: var(--text-dark);
+}
+
+.email-template-header {
+  margin-bottom: 24px;
+  padding: 24px;
+  background-color: var(--bg-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border-left: 4px solid var(--primary-color);
+}
+
+.email-template-header h1 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+.email-template-header p {
+  margin: 0;
+  color: var(--text-medium);
+  font-size: 14px;
+}
+
+/* App Layout */
+.email-template-container {
+  display: flex;
+  gap: 24px;
+  position: relative;
+}
+
+/* Sidebar & Navigation */
+.email-template-sidebar {
+  flex: 0 0 280px;
+  max-width: 280px;
+}
+
+.email-template-content {
+  flex: 1;
+}
+
+.email-template-tabs {
+  background-color: var(--primary-dark);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.email-template-tabs ul {
+  margin: 0;
+  padding: 0;
+}
+
+.email-template-tabs li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.email-template-tabs li:last-child {
+  border-bottom: none;
+}
+
+.email-template-tabs a {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.email-template-tabs a.active {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.email-template-tabs a:hover:not(.active) {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: white;
+}
+
+.email-template-tabs span.dashicons {
+  margin-right: 10px;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+/* View Toggle Buttons */
+.view-toggle {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 15px;
+}
+
+.view-button {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  margin-left: 10px;
+  font-size: 13px;
+  color: var(--text-medium);
+  text-decoration: none;
+  background-color: var(--bg-light);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+}
+
+.view-button.active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-dark);
+  color: white;
+}
+
+.view-button span.dashicons {
+  margin-right: 6px;
+}
+
+/* Settings Tab Content */
+.settings-tab-content {
+  display: none;
+  padding: 24px;
+  background-color: var(--bg-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  margin-bottom: 20px;
+}
+
+.settings-tab-content.active {
+  display: block;
+}
+
+.settings-tab-content h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--primary-color);
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.panel-description {
+  margin-top: -10px;
+  margin-bottom: 20px;
+  color: var(--text-medium);
+  font-size: 14px;
+}
+
+/* Form Fields */
+.email-template-field {
+  margin-bottom: 24px;
+}
+
+.email-template-field label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.email-template-field input[type="text"],
+.email-template-field input[type="email"],
+.email-template-field input[type="number"],
+.email-template-field input[type="password"],
+.email-template-field select,
+.email-template-field textarea {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.email-template-field input[type="text"]:focus,
+.email-template-field input[type="email"]:focus,
+.email-template-field input[type="number"]:focus,
+.email-template-field input[type="password"]:focus,
+.email-template-field select:focus,
+.email-template-field textarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+}
+
+.email-template-field-group {
+  display: flex;
+  gap: 12px;
+}
+
+.email-template-field-group input {
+  flex: 1;
+}
+
+.email-template-field-note {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-medium);
+}
+
+.email-template-field-note a {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+/* Toggle switches layout fixes */
+.switch-field {
+  display: flex;
+  align-items: flex-start;
+}
+
+.switch-field label:first-child {
+  margin-right: 15px;
+  margin-top: 2px;
+}
+
+.toggle-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.toggle-container .email-template-field-note {
+  margin-top: 8px;
+  margin-left: 0;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: var(--primary-color);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--primary-color);
+}
+
+input:checked + .slider:before {
+  transform: translateX(16px);
+}
+
+.slider.round {
+  border-radius: 24px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* Logo Alignment Options */
+.logo-alignment-options {
+  display: flex;
+  gap: 10px;
+}
+
+.alignment-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--bg-light);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.alignment-option.active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-dark);
+  color: white;
+}
+
+.alignment-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.alignment-option .dashicons {
+  font-size: 18px;
+}
+
+.alignment-option.active .dashicons {
+  color: white;
+}
+
+/* Color Picker Overrides */
+.color-field {
+  margin-bottom: 20px;
+}
+
+.color-picker-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.color-input {
+  width: 80px !important;
+  padding: 5px !important;
+  text-align: center;
+}
+
+.color-preview {
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+
+/* Fix for color picker button overlap */
+.wp-picker-container {
+  position: relative;
+}
+
+.wp-picker-holder {
+  position: absolute;
+  z-index: 100;
+}
+
+/* Fix for color picker styling */
+.wp-color-result {
+  margin: 0 6px 0 0 !important;
+  height: auto !important;
+  min-height: 30px !important;
+}
+
+.wp-picker-container .wp-color-result.button {
+  min-height: 30px !important;
+  box-shadow: none !important;
+  background: #f7f7f7 !important;
+  border-color: #ccc !important;
+  border-radius: 3px !important;
+}
+
+.wp-picker-container .wp-color-result-text {
+  background-color: rgba(0,0,0,.1) !important;
+  color: #444 !important;
+  height: 100% !important;
+  line-height: 30px !important;
+}
+
+/* Preview button in color picker should always have good contrast */
+.wp-picker-container .button.button-small {
+  background-color: #f7f7f7 !important;
+  color: #555 !important;
+  border-color: #ccc !important;
+}
+
+/* Notice Messages */
+.email-template-notice {
+  padding: 12px 16px;
+  margin-top: 12px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.email-template-notice.success {
+  background-color: #e6f4ea;
+  color: #0b7a39;
+  border-left: 4px solid var(--success-color);
+}
+
+.email-template-notice.error {
+  background-color: #fce8e6;
+  color: #c5221f;
+  border-left: 4px solid var(--danger-color);
+}
+
+.email-template-notice.info {
+  background-color: #e8f0fe;
+  color: #174ea6;
+  border-left: 4px solid var(--accent-color);
+}
+
+.email-template-notice:before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  background-size: contain;
+}
+
+.email-template-notice.success:before {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%2334a853" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>');
+}
+
+.email-template-notice.error:before {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23ea4335" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>');
+}
+
+/* Actions bar */
+.email-template-actions {
+  padding: 20px;
+  background-color: var(--bg-light);
+  border-top: 1px solid var(--border-color);
+  margin-top: 30px;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  text-align: right;
+}
+
+/* Preview Mode */
+.email-preview-mode {
+  background-color: var(--bg-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: 24px;
+}
+
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.preview-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+.preview-device-buttons {
+  display: flex;
+  gap: 5px;
+}
+
+.preview-device-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: var(--bg-light);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.preview-device-button.active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-dark);
+  color: white;
+}
+
+.preview-container {
+  position: relative;
+}
+
+.preview-device-frame {
+  width: 100%;
+  background: white;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.mobile-frame {
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.preview-device-header {
+  padding: 15px;
+  background: var(--bg-light);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.preview-device-from {
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.preview-from-email {
+  color: var(--text-medium);
+  font-weight: normal;
+}
+
+.preview-device-subject {
+  font-size: 13px;
+  color: var(--text-medium);
+}
+
+.preview-device-content {
+  padding: 0;
+  max-height: 700px;
+  overflow: auto;
+}
+
+.mobile-content {
+  max-height: 500px;
+}
+
+/* Ensure email preview fits in mobile container */
+.mobile-frame {
+  width: 320px;
+}
+
+.mobile-frame .preview-device-content {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.mobile-frame table {
+  max-width: 100% !important;
+  width: 100% !important;
+  transform: scale(0.9);
+  transform-origin: top center;
+}
+
+/* Button styling - ensuring override for WP buttons but not affecting color picker buttons */
+.email-template-settings-app .button:not(.wp-color-result):not(.wp-picker-default):not(.wp-picker-clear) {
+  background-color: var(--bg-light);
+  border-color: var(--border-color);
+  color: var(--text-dark);
+}
+
+.email-template-settings-app .button-primary:not(.wp-color-result):not(.wp-picker-default):not(.wp-picker-clear) {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-dark) !important;
+  color: white !important;
+  text-shadow: none !important;
+  box-shadow: 0 1px 0 var(--primary-dark) !important;
+}
+
+.email-template-settings-app .button-primary:not(.wp-color-result):not(.wp-picker-default):not(.wp-picker-clear):hover {
+  background-color: var(--primary-light) !important;
+}
+
+.email-template-settings-app .button-primary.button-hero:not(.wp-color-result):not(.wp-picker-default):not(.wp-picker-clear) {
+  box-shadow: 0 2px 0 var(--primary-dark) !important;
+}
+
+/* SMTP settings specific styles */
+.smtp-settings-container {
+  margin-top: 20px;
+}
+
+.smtp-option-card {
+  background-color: var(--bg-white);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 1200px) {
+  .email-template-container {
+    flex-direction: column;
+  }
+  
+  .email-template-sidebar {
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .email-template-content {
+    width: 100%;
+  }
+  
+  .email-template-colors {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 768px) {
+  .email-template-colors {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
