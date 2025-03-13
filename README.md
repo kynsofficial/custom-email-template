@@ -10,7 +10,7 @@ Custom Email Template provides a professional, customizable template for all ema
 
 The plugin also includes SMTP configuration to improve email deliverability and ensure your emails make it to recipients' inboxes instead of spam folders.
 
-![Email Preview](/assets/images/screenshot-6.png)
+![Email Preview](/assets/images/screenshot-7.png)
 
 ### Features
 
