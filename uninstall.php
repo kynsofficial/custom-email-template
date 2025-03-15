@@ -14,6 +14,15 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
  * Plugin uninstall hook - cleanup options
  */
 function custom_email_template_uninstall() {
+    // Check if data should be preserved
+    $preserve_data = get_option('custom_email_preserve_data', 'no');
+    
+    // If user wants to preserve data, exit early
+    if ($preserve_data === 'yes') {
+        return;
+    }
+    
+    // Otherwise, delete all plugin options
     $options = array(
         'custom_email_logo_url',
         'custom_email_logo_alignment',
@@ -39,6 +48,9 @@ function custom_email_template_uninstall() {
         'custom_email_smtp_password',
         'custom_email_smtp_encryption',
         'custom_email_smtp_debug',
+        'custom_email_exclude_tutor_lms',
+        'custom_email_exclude_woocommerce',
+        'custom_email_preserve_data', // Also delete the preservation setting itself
     );
     
     foreach ($options as $option) {

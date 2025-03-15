@@ -84,6 +84,9 @@ class Custom_Email_Template {
         // Ajax handlers
         add_action('wp_ajax_custom_email_template_send_test', array($plugin_admin, 'send_test_callback'));
         add_action('wp_ajax_custom_email_template_test_smtp', array($plugin_admin, 'test_smtp_callback'));
+        
+        // Add redirect filter to preserve tab ID
+        add_filter('wp_redirect', array($plugin_admin, 'settings_redirect'));
     }
 
     /**
