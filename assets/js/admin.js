@@ -1,3 +1,14 @@
+/**
+ * Custom Email Template Admin JavaScript
+ * 
+ * Handles all admin interactions including:
+ * - Color picker initialization
+ * - Live preview updates
+ * - SMTP settings toggles
+ * - Test email functionality
+ * - Media uploader integration
+ */
+
 jQuery(document).ready(function($) {
 
     /***********************************************************
@@ -20,7 +31,7 @@ jQuery(document).ready(function($) {
         $fromEmail.text('<' + adminEmail + '>');
         
         // Fix for potential "undefined" text in subject lines
-        var $subjectLine = $('BuyNaijaMade, .preview-subject');
+        var $subjectLine = $('.preview-subject');
         if ($subjectLine.length && $subjectLine.text().indexOf('undefined') >= 0) {
             $subjectLine.text($subjectLine.text().replace('<undefined>', ''));
         }
@@ -250,7 +261,7 @@ jQuery(document).ready(function($) {
         $('.preview-from-email').text('<' + fromEmail + '>');
         
         // Fix any leftover <undefined>
-        var $subjectLine = $('BuyNaijaMade, .preview-subject');
+        var $subjectLine = $('.preview-subject');
         if ($subjectLine.length && $subjectLine.text().indexOf('undefined') >= 0) {
             $subjectLine.text($subjectLine.text().replace('<undefined>', ''));
         }
@@ -297,6 +308,7 @@ jQuery(document).ready(function($) {
             'font-weight': '500',
             'display': 'inline-block'
         });
+        
         // Inline override
         $preview.find('a[href="#"]').attr('style', 
             `background-color:${buttonBgColor} !important; 
@@ -376,5 +388,66 @@ jQuery(document).ready(function($) {
         if (device === 'mobile') {
             $('.mobile-frame table').css('width', '100%');
         }
+    });
+    
+    /************************************************
+     *  Tab Navigation                             *
+     ************************************************/
+    // Set active tab based on URL parameters or hash
+    function setActiveTab() {
+        var activeTab;
+        
+        // Check URL parameters first
+        var urlParams = new URLSearchParams(window.location.search);
+        activeTab = urlParams.get('tab_id');
+        
+        // If no tab in URL params, check hash
+        if (!activeTab && window.location.hash) {
+            activeTab = window.location.hash.substring(1);
+        }
+        
+        // Default to general if nothing found
+        if (!activeTab) {
+            activeTab = 'general';
+        }
+        
+        // Update hidden field with current tab ID
+        $('#active-tab-field').val(activeTab);
+        
+        // Update UI to reflect active tab
+        $('.email-template-tabs a').removeClass('active');
+        $('.settings-tab-content').removeClass('active');
+        $('.email-template-tabs a[data-tab="' + activeTab + '"]').addClass('active');
+        $('#' + activeTab).addClass('active');
+    }
+    
+    // Run on page load
+    setActiveTab();
+    
+    // Handle tab clicks with nonce security
+    $('.email-template-tabs a').on('click', function(e) {
+        e.preventDefault();
+        
+        // Don't do anything if in preview mode
+        if ($('.email-template-settings-app').hasClass('preview-mode')) {
+            return;
+        }
+        
+        var tabId = $(this).data('tab');
+        
+        // Set active tab in hidden form field - this ensures form submission has the tab ID
+        $('#active-tab-field').val(tabId);
+        
+        // Update URL for browser history (without reloading)
+        var newUrl = new URL(window.location.href);
+        newUrl.searchParams.set('tab_id', tabId);
+        newUrl.searchParams.set('_wpnonce', customEmailTemplateSettings.tab_nonce);
+        history.pushState({}, '', newUrl.toString());
+        
+        // Update UI
+        $('.email-template-tabs a').removeClass('active');
+        $(this).addClass('active');
+        $('.settings-tab-content').removeClass('active');
+        $('#' + tabId).addClass('active');
     });
 });

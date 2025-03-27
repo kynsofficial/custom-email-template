@@ -21,9 +21,15 @@
   --radius-lg: 12px;
 }
 
-
-
-
+/* Fix for long URL breaking in emails */
+.email-content a, #email-preview a, #email-preview-mobile a {
+  word-break: break-all;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  overflow-wrap: break-word;
+  display: inline-block;
+  max-width: 100%;
+}
 
 /* Force correct button styling in email preview */
 #email-preview a[href="#"],
@@ -692,3 +698,11 @@ input:checked + .slider:before {
   }
 }
 
+/* Preview mode specific styling */
+.preview-mode .email-template-sidebar {
+  visibility: hidden;
+}
+
+.preview-mode .email-template-container {
+  min-height: 700px;
+}

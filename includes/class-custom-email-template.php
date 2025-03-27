@@ -27,7 +27,6 @@ class Custom_Email_Template {
      */
     public function __construct() {
         $this->load_dependencies();
-        $this->set_locale();
         $this->define_admin_hooks();
         $this->define_email_hooks();
         $this->define_smtp_hooks();
@@ -47,15 +46,6 @@ class Custom_Email_Template {
         
         // SMTP class
         require_once CUSTOM_EMAIL_TEMPLATE_PLUGIN_DIR . 'includes/class-custom-email-template-smtp.php';
-    }
-
-    /**
-     * Define the locale for this plugin for internationalization.
-     *
-     * @access   private
-     */
-    private function set_locale() {
-        add_action('plugins_loaded', array($this, 'load_plugin_textdomain'));
     }
 
     /**
@@ -126,17 +116,6 @@ class Custom_Email_Template {
         
         // Configure SMTP for PHPMailer
         add_action('phpmailer_init', array($plugin_smtp, 'configure_smtp'));
-    }
-
-    /**
-     * Load the plugin text domain for translation.
-     */
-    public function load_plugin_textdomain() {
-        load_plugin_textdomain(
-            'custom-email-template',
-            false,
-            dirname(plugin_basename(CUSTOM_EMAIL_TEMPLATE_PLUGIN_DIR . 'custom-email-template.php')) . '/languages/'
-        );
     }
 
     /**

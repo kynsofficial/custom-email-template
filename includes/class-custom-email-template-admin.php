@@ -28,9 +28,6 @@ class Custom_Email_Template_Admin {
         // Add media uploader
         wp_enqueue_media();
         
-        // Ensure asset directories exist
-        $this->ensure_asset_directories();
-        
         // Add plugin custom CSS
         wp_enqueue_style(
             'custom-email-template-admin', 
@@ -54,24 +51,6 @@ class Custom_Email_Template_Admin {
             'ajaxurl' => admin_url('admin-ajax.php'),
             'tab_nonce' => wp_create_nonce('custom_email_template_tab_nonce')
         ));
-    }
-
-    /**
-     * Ensure asset directories and files exist.
-     */
-    private function ensure_asset_directories() {
-        $css_dir = CUSTOM_EMAIL_TEMPLATE_PLUGIN_DIR . 'assets/css';
-        $js_dir = CUSTOM_EMAIL_TEMPLATE_PLUGIN_DIR . 'assets/js';
-        
-        if (!file_exists($css_dir)) {
-            wp_mkdir_p($css_dir);
-            file_put_contents($css_dir . '/admin.css', $this->get_admin_css());
-        }
-        
-        if (!file_exists($js_dir)) {
-            wp_mkdir_p($js_dir);
-            file_put_contents($js_dir . '/admin.js', $this->get_admin_js());
-        }
     }
 
     /**
@@ -208,7 +187,7 @@ class Custom_Email_Template_Admin {
      */
     public function set_default_options() {
         $defaults = array(
-            'custom_email_logo_url' => 'https://img.freepik.com/premium-vector/simple-letter-n-company-logo_197415-6.jpg?w=1380',
+            'custom_email_logo_url' => plugins_url('assets/images/default-logo.png', dirname(__FILE__)),
             'custom_email_logo_alignment' => 'center',
             'custom_email_footer_text' => 'This is an automatically generated email. Please do not reply.',
             'custom_email_preserve_data' => 'no',
@@ -364,8 +343,7 @@ class Custom_Email_Template_Admin {
         $auth = isset($_POST['auth']) && $_POST['auth'] === 'yes';
         $username = isset($_POST['username']) ? sanitize_text_field(wp_unslash($_POST['username'])) : '';
         
-		
-		// Special handling for password - unslash first then sanitize
+        // Special handling for password - unslash first then sanitize
         $raw_password = isset($_POST['password']) ? sanitize_text_field(wp_unslash($_POST['password'])) : '';
         // Process sanitized password for SMTP use (restore certain special characters if needed)
         $password = $this->process_smtp_password($raw_password);
@@ -439,28 +417,5 @@ class Custom_Email_Template_Admin {
         // For now, just return the sanitized password
         // This method can be expanded later if special character handling is needed
         return $sanitized_password;
-    }
-	
-	
-    /**
-     * Get admin CSS content.
-     *
-     * @return string The CSS content.
-     */
-    private function get_admin_css() {
-        ob_start();
-        include CUSTOM_EMAIL_TEMPLATE_PLUGIN_DIR . 'assets/css/admin.css';
-        return ob_get_clean();
-    }
-
-    /**
-     * Get admin JS content.
-     *
-     * @return string The JS content.
-     */
-    private function get_admin_js() {
-        ob_start();
-        include CUSTOM_EMAIL_TEMPLATE_PLUGIN_DIR . 'assets/js/admin.js';
-        return ob_get_clean();
     }
 }

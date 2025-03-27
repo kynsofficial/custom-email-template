@@ -296,51 +296,60 @@ private function add_reply_to_header(&$args) {
         }
     }
     
-    /**
-     * Get the custom email template.
-     *
-     * @param string $content The original email content.
-     * @param string $subject The email subject.
-     * @return string The formatted email with template applied.
-     */
-    public function get_template($content, $subject) {
-        // Get site info
-        $site_name = get_bloginfo('name');
-        
-        // Get logo URL from settings or use default
-        $logo_url = get_option('custom_email_logo_url', 'https://aptlearn.io/wp-content/uploads/2022/04/aptLearn-horizontal-locukup-colored-1.png');
-        
-        // Get logo alignment
-        $logo_alignment = get_option('custom_email_logo_alignment', 'center');
-        
-        // Check if content is already HTML
-        $is_html = preg_match('/<html|<body|<div|<p|<table|<h[1-6]|<img/i', $content);
-        
-        // If it's not HTML, wrap it in paragraph tags and convert line breaks
-        if (!$is_html) {
-            $content = wpautop($content);
-        }
-        
-        // Get footer text from settings or use default
-        $footer_text = get_option('custom_email_footer_text', 'This is an automatically generated email. Please do not reply.');
-        
-        // Get color settings with defaults
-        $bg_color = get_option('custom_email_bg_color', '#f7f7f7');
-        $container_bg_color = get_option('custom_email_container_bg_color', '#ffffff');
-        $header_border_color = get_option('custom_email_header_border_color', '#e0e2ea');
-        $primary_text_color = get_option('custom_email_primary_text_color', '#212327');
-        $secondary_text_color = get_option('custom_email_secondary_text_color', '#5b616f');
-        $footer_text_color = get_option('custom_email_footer_text_color', '#9da3af');
-        $footer_border_color = get_option('custom_email_footer_border_color', '#e0e2ea');
-        $button_bg_color = get_option('custom_email_button_bg_color', '#696cff');
-        $button_text_color = get_option('custom_email_button_text_color', '#ffffff');
-        
-        
-        // Include the email template file
-        ob_start();
-        include CUSTOM_EMAIL_TEMPLATE_PLUGIN_DIR . 'templates/email-template.php';
-        $html_message = ob_get_clean();
-        
-        return $html_message;
+ 
+//**
+ /**
+ * Get the custom email template.
+ *
+ * @param string $content The original email content.
+ * @param string $subject The email subject.
+ * @return string The formatted email with template applied.
+ */
+public function get_template($content, $subject) {
+    // Get site info
+    $site_name = get_bloginfo('name');
+    
+    // Get logo URL from settings or use default
+    $logo_url = get_option('custom_email_logo_url', plugins_url('assets/images/default-logo.png', dirname(__FILE__)));
+    
+    // Get logo alignment
+    $logo_alignment = get_option('custom_email_logo_alignment', 'center');
+    
+    // Check if content is already HTML
+    $is_html = preg_match('/<html|<body|<div|<p|<table|<h[1-6]|<img/i', $content);
+    
+    // If it's not HTML, wrap it in paragraph tags and convert line breaks
+    if (!$is_html) {
+        $content = wpautop($content);
     }
+    
+    // Get footer text from settings or use default
+    $footer_text = get_option('custom_email_footer_text', 'This is an automatically generated email. Please do not reply.');
+    
+    // Get color settings with defaults
+    $bg_color = get_option('custom_email_bg_color', '#f7f7f7');
+    $container_bg_color = get_option('custom_email_container_bg_color', '#ffffff');
+    $header_border_color = get_option('custom_email_header_border_color', '#e0e2ea');
+    $primary_text_color = get_option('custom_email_primary_text_color', '#212327');
+    $secondary_text_color = get_option('custom_email_secondary_text_color', '#5b616f');
+    $footer_text_color = get_option('custom_email_footer_text_color', '#9da3af');
+    $footer_border_color = get_option('custom_email_footer_border_color', '#e0e2ea');
+    $button_bg_color = get_option('custom_email_button_bg_color', '#696cff');
+    $button_text_color = get_option('custom_email_button_text_color', '#ffffff');
+    
+    // Pre-apply button styling to content
+    $content = str_replace(
+        '<a href="#"',
+        '<a href="#" style="background-color: ' . esc_attr($button_bg_color) . '; color: ' . esc_attr($button_text_color) . '; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-weight: 500; display: inline-block;"',
+        $content
+    );
+    
+    // Include the email template file
+    ob_start();
+    include CUSTOM_EMAIL_TEMPLATE_PLUGIN_DIR . 'templates/email-template.php';
+    $html_message = ob_get_clean();
+    
+    return $html_message;
+}
+
 }

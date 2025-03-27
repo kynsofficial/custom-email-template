@@ -10,24 +10,15 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-// Verify nonce for tab navigation.
-$nonce_verified = false;
-if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'custom_email_template_tab_nonce' ) ) {
-    $nonce_verified = true;
-}
+// Initialize defaults
+$active_tab = 'general';
+$view_mode = 'settings';
 
-// Get active tab + view from query string (with nonce verification for security).
-$default_tab = 'general';
-$default_view = 'settings';
-
-// Only process query parameters if nonce is verified or if they are not present (first load)
-if ( $nonce_verified || ( ! isset( $_GET['tab_id'] ) && ! isset( $_GET['view'] ) ) ) {
-    $active_tab = isset( $_GET['tab_id'] ) ? sanitize_text_field( wp_unslash( $_GET['tab_id'] ) ) : $default_tab;
-    $view_mode  = isset( $_GET['view'] ) ? sanitize_text_field( wp_unslash( $_GET['view'] ) ) : $default_view;
-} else {
-    // Default values if nonce verification fails
-    $active_tab = $default_tab;
-    $view_mode  = $default_view;
+// Verify nonce for tab navigation and parameter handling
+if (isset($_GET['_wpnonce']) && wp_verify_nonce(sanitize_key($_GET['_wpnonce']), 'custom_email_template_tab_nonce')) {
+    // Only process query parameters if nonce is verified
+    $active_tab = isset($_GET['tab_id']) ? sanitize_text_field(wp_unslash($_GET['tab_id'])) : 'general';
+    $view_mode = isset($_GET['view']) ? sanitize_text_field(wp_unslash($_GET['view'])) : 'settings';
 }
 
 // Sample email content for preview.
@@ -56,16 +47,6 @@ $site_name  = get_bloginfo( 'name' );
 $from_name  = get_option( 'custom_email_from_name', $site_name );
 $from_email = get_option( 'custom_email_from_email', get_option( 'admin_email' ) );
 ?>
-
-<!-- Add CSS to hide sidebar links in preview mode -->
-<style>
-	.preview-mode .email-template-sidebar {
-		visibility: hidden;
-	}
-	.preview-mode .email-template-container {
-		min-height: 700px;
-	}
-</style>
 
 <div class="email-template-settings-app <?php echo ( 'preview' === $view_mode ) ? 'preview-mode' : ''; ?>">
 	<div class="email-template-header">
@@ -174,23 +155,6 @@ $from_email = get_option( 'custom_email_from_email', get_option( 'admin_email' )
 
 							<div class="preview-device-content" id="email-preview">
 								<?php 
-								$button_bg_color   = get_option( 'custom_email_button_bg_color', '#696cff' );
-								$button_text_color = get_option( 'custom_email_button_text_color', '#ffffff' );
-								$extra_style       = "<style>
-                                    a[href='#'], .email-content a.button {
-                                        background-color: {$button_bg_color} !important;
-                                        color: {$button_text_color} !important;
-                                        padding: 10px 20px !important;
-                                        border-radius: 4px !important;
-                                        text-decoration: none !important;
-                                        font-weight: 500 !important;
-                                        display: inline-block !important;
-                                    }
-                                </style>";
-
-								// Escape and output the style block.
-								echo wp_kses( $extra_style, array( 'style' => array() ) );
-
 								// Output the email template safely.
 								echo wp_kses_post( $email_template->get_template( $sample_content, 'Email Preview' ) );
 								?>
@@ -234,7 +198,7 @@ $from_email = get_option( 'custom_email_from_email', get_option( 'admin_email' )
 							<label for="custom_email_logo_url"><?php echo esc_html__( 'Logo', 'custom-email-template' ); ?></label>
 							<div class="email-template-field-group">
 								<input type="text" name="custom_email_logo_url" id="custom_email_logo_url"
-								       value="<?php echo esc_attr( get_option( 'custom_email_logo_url', 'https://img.freepik.com/premium-vector/simple-letter-n-company-logo_197415-6.jpg?w=1380' ) ); ?>"
+								       value="<?php echo esc_attr( get_option( 'custom_email_logo_url', plugins_url('assets/images/default-logo.png', dirname(__FILE__)) ) ); ?>"
 								       class="regular-text preview-update" />
 								<button type="button" class="button" id="upload-logo-button">
 									<?php echo esc_html__( 'Choose Logo', 'custom-email-template' ); ?>
@@ -630,69 +594,3 @@ $from_email = get_option( 'custom_email_from_email', get_option( 'admin_email' )
 		</div>
 	</div>
 </div>
-
-<!-- Script for tab navigation with improved redirect handling -->
-<script type="text/javascript">
-jQuery(document).ready(function($) {
-    // Set active tab based on URL parameters or hash
-    function setActiveTab() {
-        var activeTab;
-        
-        // Check URL parameters first
-        var urlParams = new URLSearchParams(window.location.search);
-        activeTab = urlParams.get('tab_id');
-        
-        // If no tab in URL params, check hash
-        if (!activeTab && window.location.hash) {
-            activeTab = window.location.hash.substring(1);
-        }
-        
-        // Default to general if nothing found
-        if (!activeTab) {
-            activeTab = 'general';
-        }
-        
-        // Update hidden field with current tab ID
-        $('#active-tab-field').val(activeTab);
-        
-        // Update UI to reflect active tab
-        $('.email-template-tabs a').removeClass('active');
-        $('.settings-tab-content').removeClass('active');
-        $('.email-template-tabs a[data-tab="' + activeTab + '"]').addClass('active');
-        $('#' + activeTab).addClass('active');
-    }
-    
-    // Run on page load
-    setActiveTab();
-    
-    // Handle tab clicks
-    $('.email-template-tabs a').on('click', function(e) {
-        e.preventDefault();
-        
-        // Don't do anything if in preview mode
-        if ($('.email-template-settings-app').hasClass('preview-mode')) {
-            return;
-        }
-        
-        var tabId = $(this).data('tab');
-        
-        // Set active tab in hidden form field - this ensures form submission has the tab ID
-        $('#active-tab-field').val(tabId);
-        
-        // Create nonce for security
-        var nonce = '<?php echo esc_js(wp_create_nonce('custom_email_template_tab_nonce')); ?>';
-        
-        // Update URL for browser history (without reloading)
-        var newUrl = new URL(window.location.href);
-        newUrl.searchParams.set('tab_id', tabId);
-        newUrl.searchParams.set('_wpnonce', nonce);
-        history.pushState({}, '', newUrl.toString());
-        
-        // Update UI
-        $('.email-template-tabs a').removeClass('active');
-        $(this).addClass('active');
-        $('.settings-tab-content').removeClass('active');
-        $('#' + tabId).addClass('active');
-    });
-});
-</script>
