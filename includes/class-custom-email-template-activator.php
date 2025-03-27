@@ -18,7 +18,7 @@ class Custom_Email_Template_Activator {
     public static function activate() {
         // Create default options if they don't exist
         $options = array(
-            'custom_email_logo_url' => 'https://img.freepik.com/premium-vector/simple-letter-n-company-logo_197415-6.jpg?w=1380',
+            'custom_email_logo_url' => plugins_url('assets/images/default-logo.png', dirname(__FILE__)),
             'custom_email_logo_alignment' => 'center',
             'custom_email_footer_text' => 'This is an automatically generated email. Please do not reply.',
             'custom_email_bg_color' => '#f7f7f7',
